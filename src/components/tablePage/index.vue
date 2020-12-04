@@ -1,74 +1,102 @@
 <template>
-  <el-card class="box-card">
+<div>
+ <el-card class="box-card">
     <div slot="header" class="clearfix">
-      <span>卡片名称</span>
-      <el-button style="float: right; padding: 3px 0" type="text"
-        >操作按钮</el-button
-      >
+      <span>查询条件</span>
     </div>
-    <!-- <my-form v-bind="$attrs" v-on="$listeners"></my-form> -->
-    <my-tabel ></my-tabel>
+    <my-form v-bind="formProps" v-on="formEvent" :disabled="loading"></my-form>
   </el-card>
+   <el-card class="box-card">
+    <div slot="header" class="clearfix">
+      <span>查询结果</span>
+    </div>
+    <my-tabel
+      v-loading="loading"
+      v-bind="tableProps"
+      :tableData="tableData"
+      :paginationProps="paginationProps"
+      :handleSizeChange="handleSizeChange"
+      :handleCurrentChange="handleCurrentChange"
+    ></my-tabel>
+  </el-card>
+</div>
+ 
 </template>
 
 <script>
-//:tabelItems='tabelItems' :tableData='tableData'
+//
 import MyForm from "../myForm/index.vue";
 import MyTabel from "../myTabel/index.vue";
 export default {
   props: {
-  
+    tableProps: {
+      require: true,
+      default: () => {},
+    },
+    formProps: {
+      require: true,
+      default: () => {},
+    },
   },
   data() {
     return {
-      form: {},
-      tabelItems: [
-        {
-          name: 'date',
-          label: '日期'
-        },
-        {
-          name: 'name',
-          label: '姓名'
-        },
-        {
-          name: 'address',
-          label: '地址'
-        }
-      ],
-      tableData: [{
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          }]
-    }
+      paginationProps: {},
+      tableData: [],
+      formEvent: {
+        ...(this.formProps.event ? this.formProps.event : {}),
+        submit: this.onSubmit,
+      },
+      loading: false,
+      querydata: {}
+    };
   },
-  created() {},
+  created() {
+    this.onSubmit()
+  },
   methods: {
-    onSubmit(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert("submit!");
-          if (this.$listeners.submit) {
-            this.$emit("submit", this.form);
-          }
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+    onSubmit(data) {
+      this.querydata={...data}
+      this.paginationProps = {
+        ...this.paginationProps,
+        startPage: 1,
+      };
+      this.getTabelList(data);
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条, 刷新列表`);
+      this.paginationProps = {
+        ...this.paginationProps,
+        startPage: 1,
+        pageSize: val,
+      };
+      this.getTabelList();
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.paginationProps = {
+        ...this.paginationProps,
+        startPage: val,
+      };
+      this.getTabelList();
+    },
+    getTabelList() {
+      let querydata={ ...this.paginationProps, ...this.querydata }
+      this.loading = true;
+      console.log("请求的数据", querydata);
+      this.$get("/getList", querydata)
+        .then((res) => {
+          setTimeout(() => {
+            const { list, ...pageObj } = res;
+            this.tableData = list;
+            this.paginationProps = pageObj;
+            this.loading = false;
+          }, 2000);
+        })
+        .catch((err) => {
+          console.log(err, 1111111111111);
+          // this.loading=false
+          this.tableData = [];
+        });
     },
   },
   components: {

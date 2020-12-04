@@ -42,11 +42,48 @@ const useMock = (useMock) => {
 
         }
 
+        const produceListData = function (startPage=1,pageSize=10) {
+
+            let list = [];
+
+            for (let i = 0; i < pageSize; i++) {
+
+                let newArticleObject = {
+
+                    name: Random.cname(), //  Random.csentence( min, max )
+
+                    address: Random.csentence(8, 15), // Random.cname() 随机生成一个常见的中文姓名
+
+                    date: Random.date() + ' ' + Random.time() // Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd；Random.time() 返回一个随机的时间字符串
+
+                }
+
+                list.push(newArticleObject)
+
+            }
+            return {
+
+                list,
+                total: 1000,
+                startPage,
+                pageSize
+
+            }
+
+        }
+
 
 
         // Mock.mock( url, post/get , 返回的数据)；
 
         Mock.mock('/news/index', 'post', produceNewsData);
+        Mock.mock(RegExp('/getList' + ".*"), 'get', (options)=>{
+        
+            let data=options.body ? JSON.parse(options.body) : {}
+            const {startPage,pageSize}=data
+            console.log(options,data)
+            return produceListData(startPage,pageSize)
+        });
     }
     
 }

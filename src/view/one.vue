@@ -1,6 +1,6 @@
 <template>
 <div>
-  <my-form :formItems="formItems" @submit='onSubmit'></my-form>
+  <my-form :formItems="formItems" @submit='onSubmit' :newsListShow='newsListShow'></my-form>
   <el-time-select
   v-model="value"
   :picker-options="{
@@ -62,7 +62,8 @@ export default {
           ],
         },
       ],
-       value: ''
+       value: '',
+       newsListShow: []
     };
   },
   created() {

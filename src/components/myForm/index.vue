@@ -15,10 +15,10 @@
     </el-row>
     <br />
     <el-form-item>
-      <el-button type="primary" @click="onSubmit(formConfig.ref)"
-        >提交</el-button
-      >
-      <el-button>取消</el-button>
+      <el-button type="primary" @click="onSubmit(formConfig.ref)" :disabled='disabled'
+        >
+        提交</el-button>
+      <el-button @click="resetForm(formConfig.ref)" :disabled='disabled'>重置</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -30,6 +30,9 @@ export default {
     formItems: {
       type: Array,
       required: true,
+    },
+    disabled: {
+      default: false
     },
     formConfig: {
       type: Object,
@@ -51,7 +54,6 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
           if (this.$listeners.submit) {
             this.$emit("submit", this.form);
           }
@@ -60,6 +62,12 @@ export default {
           return false;
         }
       });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+      if (this.$listeners.submit) {
+        this.$emit("submit", this.form);
+      }
     },
   },
   components: {

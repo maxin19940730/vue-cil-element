@@ -1,67 +1,108 @@
 <template>
-  <el-table
-    :data="tableData"
-    style="width: 100%"
-    :row-class-name="tableRowClassName">
-    <el-table-column
-      prop="date"
-      label="日期"
-      width="180">
-    </el-table-column>
-    <el-table-column
-      prop="name"
-      label="姓名"
-      width="180">
-    </el-table-column>
-    <el-table-column
-      prop="address"
-      label="地址">
-    </el-table-column>
-  </el-table>
+  <table-page :tableProps="tableProps" :formProps="formProps"></table-page>
 </template>
 
-<style>
-  .el-table .warning-row {
-    background: oldlace;
-  }
-
-  .el-table .success-row {
-    background: #f0f9eb;
-  }
-</style>
-
 <script>
-  export default {
-    methods: {
-      tableRowClassName({row, rowIndex}) {
-        if (rowIndex === 1) {
-          return 'warning-row';
-        } else if (rowIndex === 3) {
-          return 'success-row';
-        }
-        return '';
-      }
+import TablePage from "../components/tablePage/index.vue";
+export default {
+  data() {
+    return {
+      tabelItems: [
+        {
+          name: "date",
+          label: "日期",
+          width: 90,
+        },
+        {
+          name: "name",
+          label: "姓名",
+        },
+        {
+          name: "address",
+          label: "地址",
+        },
+      ],
+      tableData: {},
+      newsListShow: [],
+
+      tableProps: {
+        tabelItems: [
+          {
+            name: "date",
+            label: "日期",
+            width: 90,
+          },
+          {
+            name: "name",
+            label: "姓名",
+          },
+          {
+            name: "address",
+            label: "地址",
+          },
+        ],
+        height: 300,
+      },
+      formProps: {
+        formItems: [
+          {
+            label: "活动名称",
+            type: "input",
+            name: "name",
+            span: 12,
+            rules: [
+              // { required: true, message: "请输入活动名称", trigger: "blur" },
+              // {
+              //   min: 3,
+              //   max: 5,
+              //   message: "长度在 3 到 5 个字符",
+              //   trigger: "blur",
+              // },
+            ],
+          },
+          {
+            label: "活动名称2",
+            type: "input",
+            name: "name2",
+            span: 12,
+            rules: [
+              // { required: true, message: "请输入活动名称", trigger: "blur" },
+              // {
+              //   min: 3,
+              //   max: 5,
+              //   message: "长度在 3 到 5 个字符",
+              //   trigger: "blur",
+              // },
+            ],
+          },
+          {
+            label: "下拉选",
+            type: "select",
+            name: "select",
+            rules: [
+              { required: false, message: "请输入下拉选", trigger: "blur" },
+            ],
+            options: [
+              { label: "区域一", value: "2" },
+              { label: "区域二", value: "1" },
+            ],
+          },
+        ],
+        // event: {
+        //   submit: this.onSubmit,
+        // },
+      },
+    };
+  },
+  created() {},
+  methods: {
+    onSubmit(data) {
+      console.log("two得到数据", data);
     },
-    data() {
-      return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }]
-      }
-    }
-  }
+  },
+
+  components: {
+    TablePage,
+  },
+};
 </script>
