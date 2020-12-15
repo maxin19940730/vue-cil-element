@@ -5,7 +5,7 @@ const menu=[
         children: [
             {
                 name: '用户管理',
-                path: '/two',
+                path: '/userManage',
             },
             {
                 name: '字典管理',

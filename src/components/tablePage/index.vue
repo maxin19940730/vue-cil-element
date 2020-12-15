@@ -1,5 +1,8 @@
 <template>
 <div>
+<el-card class="box-card">
+    <h3>{{pageProps.title}}</h3>
+</el-card>
  <el-card class="box-card">
     <div slot="header" class="clearfix">
       <span>查询条件</span>
@@ -35,8 +38,15 @@ export default {
     },
     formProps: {
       require: true,
-      default: () => {},
+      default: () => {
+        return {}
+      },
     },
+    pageProps: {
+      default: () => {
+        return {}
+      },
+    }
   },
   data() {
     return {

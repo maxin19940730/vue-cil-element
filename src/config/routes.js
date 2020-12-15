@@ -3,17 +3,22 @@ const routes = [
       path: '/',
       name: 'layout',
       icon: 'el-icon-location',
-      component: r => require.ensure([], () => r(require('../components/layout/layout')), 'demo'),
+      component: r => require.ensure([], () => r(require('@/components/layout/layout')), 'demo'),
       children: [
         {
           path: '/one',
           name: 'one',
-          component: r => require.ensure([], () => r(require('../view/one')), 'demo'),
+          component: r => require.ensure([], () => r(require('@/view/one')), 'demo'),
         },
         {
           path: '/two',
           name: 'two',
-          component: r => require.ensure([], () => r(require('../view/two')), 'demo')
+          component: r => require.ensure([], () => r(require('@/view/two')), 'demo')
+        },
+        {
+          path: '/userManage',
+          name: 'userManage',
+          component: r => require.ensure([], () => r(require('@/view/userManage/list')), 'demo')
         },
         { path:'', redirect:"/login"},
       ]
@@ -21,7 +26,7 @@ const routes = [
     {
       path: '/login',
       name: 'login',
-      component: r => require.ensure([], () => r(require('../view/login/login')), 'login'),
+      component: r => require.ensure([], () => r(require('@/view/login/login')), 'login'),
     },
     { path:'*', redirect:"/login"},
   ]

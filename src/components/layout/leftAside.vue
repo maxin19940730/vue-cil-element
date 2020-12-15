@@ -42,7 +42,7 @@
 </style>
 
 <script>
-import menu from "../../config/menu";
+import menu from "@/config/menu";
 import treeElement from "./treeElement";
 export default {
   data() {

@@ -1,3 +1,6 @@
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
 module.exports = {
     devServer: {
       proxy: {
@@ -8,5 +11,6 @@ module.exports = {
           pathRewrite: { '^/api': 'http://localhost:8080/api' } //这里重写路径--vue端口
         }
       }
-    }
+    },
+  
   }

@@ -1,9 +1,9 @@
 <template>
-  <table-page :tableProps="tableProps" :formProps="formProps"></table-page>
+  <table-page :tableProps="tableProps" :formProps="formProps" :pageProps='pageProps'></table-page>
 </template>
 
 <script>
-import TablePage from "@/components/tablePage/index.vue";
+import TablePage from "@/components/tablePage/index.vue"
 export default {
   data() {
     return {
@@ -83,11 +83,15 @@ export default {
             ],
           },
         ],
+       
 
         // event: {
         //   submit: this.onSubmit,
         // },
       },
+      pageProps: {
+ title: '用户管理'
+      }
     };
   },
   created() {},
